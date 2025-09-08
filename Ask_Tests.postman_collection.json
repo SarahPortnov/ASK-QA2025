@@ -1,0 +1,627 @@
+{
+	"info": {
+		"_postman_id": "8355a927-1e5d-44f5-8e1e-1433a8e90702",
+		"name": "Ask_Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39586782"
+	},
+	"item": [
+		{
+			"name": "/sign-in-[T]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify user role = TEACHER\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include('TEACHER');\r",
+							"    });\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"TeacherToken\", jsonData.token);\r",
+							"\r",
+							"pm.test(\"Verify user name\", function() {\r",
+							"    pm.expect(jsonData.user.name).to.eql(\"Galina Teacher\")\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"ask_instr@aol.com\",\r\n  \"password\": \"ABC123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://ask-qa.portnov.com/api/v1/sign-in"
+			},
+			"response": []
+		},
+		{
+			"name": "/sign-in-[S]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify user role = STUDENT\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include('STUDENT');\r",
+							"    });\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"StudentToken\", jsonData.token);\r",
+							"pm.environment.set(\"StudentId\", jsonData.user.id);\r",
+							"\r",
+							"pm.test(\"Verify user name\", function() {\r",
+							"    pm.expect(jsonData.user.name).to.eql(\"Sarah P\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"email\": \"sarah.p@gameofthrones.com\",\r\n  \"password\": \"123ABC\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://ask-qa.portnov.com/api/v1/sign-in"
+			},
+			"response": []
+		},
+		{
+			"name": "/sign-in-404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"jon.snow@gameofthrones.com\",\r\n  \"password\": \"GameOfThrones\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://ask-qa.portnov.com/api/v1/sign-in"
+			},
+			"response": []
+		},
+		{
+			"name": "/Quiz - [T] - New Quiz",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"quizId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Demo Quiz Sarah 0/27/25\",\r\n  \"totalScore\": 18,\r\n  \"passingPercentage\": 75,\r\n  \"showStopperQuestion\": 1,\r\n  \"questions\": [\r\n    {\r\n      \"type\": \"TEXTUAL\",\r\n      \"question\": \"What is your name?\",\r\n      \"score\": 5\r\n    },\r\n    {\r\n      \"type\": \"SINGLE_CHOICE\",\r\n      \"question\": \"Which city is city largest in California?\",\r\n      \"score\": 7,\r\n      \"answer\": 2,\r\n      \"hasOtherOption\": false,\r\n      \"options\": [\r\n        \"San Francisco\",\r\n        \"Sacramento\",\r\n        \"Los Angeles\",\r\n        \"Redding\"\r\n      ]\r\n    },\r\n    {\r\n      \"type\": \"MULTIPLE_CHOICE\",\r\n      \"question\": \"Who was apple founded by?\",\r\n      \"score\": 6,\r\n      \"answers\": [\r\n        0,\r\n        1,\r\n        2\r\n      ],\r\n      \"hasOtherOption\": true,\r\n      \"options\": [\r\n        \"Steve Jobs\",\r\n        \"Steve Wozniak\",\r\n        \"Ronald Wayne\",\r\n        \"Ronald Reagan\"\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://ask-qa.portnov.com/api/v1/quiz"
+			},
+			"response": []
+		},
+		{
+			"name": "/Quiz - [T] - New Quiz - updated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Demo Quiz Sarah updated\",\r\n  \"totalScore\": 18,\r\n  \"passingPercentage\": 75,\r\n  \"showStopperQuestion\": 1,\r\n  \"questions\": [\r\n    {\r\n      \"type\": \"TEXTUAL\",\r\n      \"question\": \"What is your name?\",\r\n      \"score\": 5\r\n    },\r\n    {\r\n      \"type\": \"SINGLE_CHOICE\",\r\n      \"question\": \"Which city is city largest in California?\",\r\n      \"score\": 7,\r\n      \"answer\": 2,\r\n      \"hasOtherOption\": false,\r\n      \"options\": [\r\n        \"San Francisco\",\r\n        \"Sacramento\",\r\n        \"Los Angeles\",\r\n        \"Redding\"\r\n      ]\r\n    },\r\n    {\r\n      \"type\": \"MULTIPLE_CHOICE\",\r\n      \"question\": \"Who was apple founded by?\",\r\n      \"score\": 6,\r\n      \"answers\": [\r\n        0,\r\n        1,\r\n        2\r\n      ],\r\n      \"hasOtherOption\": true,\r\n      \"options\": [\r\n        \"Steve Jobs\",\r\n        \"Steve Wozniak\",\r\n        \"Ronald Wayne\",\r\n        \"Ronald Reagan\"\r\n      ]\r\n    }\r\n  ],\r\n  \"id\": {{quizId}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://ask-qa.portnov.com/api/v1/quiz"
+			},
+			"response": []
+		},
+		{
+			"name": "/Quiz - [T] - New Quiz - Get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"var myQuiz = pm.environment.get(\"quizId\");\r",
+							"console.log(\"my quiz number \", myQuiz);\r",
+							"\r",
+							"pm.test(\"Verify quiz id and updated name in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[jsonData.length-1].id).to.eql(myQuiz);\r",
+							"    pm.expect(jsonData[jsonData.length-1].name).to.eql(\"Demo Quiz Sarah updated\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Demo Quiz Sarah updated\",\r\n  \"totalScore\": 18,\r\n  \"passingPercentage\": 75,\r\n  \"showStopperQuestion\": 1,\r\n  \"questions\": [\r\n    {\r\n      \"type\": \"TEXTUAL\",\r\n      \"question\": \"What is your name?\",\r\n      \"score\": 5\r\n    },\r\n    {\r\n      \"type\": \"SINGLE_CHOICE\",\r\n      \"question\": \"Which city is city largest in California?\",\r\n      \"score\": 7,\r\n      \"answer\": 2,\r\n      \"hasOtherOption\": false,\r\n      \"options\": [\r\n        \"San Francisco\",\r\n        \"Sacramento\",\r\n        \"Los Angeles\",\r\n        \"Redding\"\r\n      ]\r\n    },\r\n    {\r\n      \"type\": \"MULTIPLE_CHOICE\",\r\n      \"question\": \"Who was apple founded by?\",\r\n      \"score\": 6,\r\n      \"answers\": [\r\n        0,\r\n        1,\r\n        2\r\n      ],\r\n      \"hasOtherOption\": true,\r\n      \"options\": [\r\n        \"Steve Jobs\",\r\n        \"Steve Wozniak\",\r\n        \"Ronald Wayne\",\r\n        \"Ronald Reagan\"\r\n      ]\r\n    }\r\n  ],\r\n  \"id\": {{quizId}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/quizzes"
+			},
+			"response": []
+		},
+		{
+			"name": "/Assignment - [T] - Assign New Quiz",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"assignmentId\", jsonData[0].id);\r",
+							"pm.environment.set(\"assignmentGroupId\", jsonData[jsonData.length-1].assignmentGroupId);\r",
+							"\r",
+							"pm.test(\"Verify status, result and gradedBy before submission\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].status).to.eql(\"ASSIGNED\");\r",
+							"    pm.expect(jsonData[jsonData.length-1].result).to.eql(\"PENDING\");\r",
+							"    pm.expect(jsonData[jsonData.length-1].gradedBy).to.eql(\"NONE\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"quizId\": {{quizId}},\r\n  \"userIds\": [{{StudentId}}]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/assignment",
+				"description": "## Endpoint Overview\n\nThis endpoint allows users to submit an assignment associated with a specific quiz.\n\n## Request\n\n- **Method**: POST\n    \n- **URL**: `{{baseUrl}}/assignment`\n    \n\n### Request Body\n\nThe request body must be in JSON format and should include the following parameter:\n\n- {\"quizId\": \"{{quizId}}\"}\n    \n\n## Response\n\n- **Status Code**: 400\n    \n- **Content-Type**: application/json\n    \n\n### Response Structure\n\nThe response will return a JSON object with the following structure:\n\n- **status** (string): Indicates the status of the request.\n    \n- **message** (string): Provides additional information about the request outcome.\n    \n- **data** (object): Contains detailed error information, including:\n    \n    - **keyword** (string): The validation keyword that triggered the error.\n        \n    - **dataPath** (string): The path to the data that caused the error.\n        \n    - **schemaPath** (string): The path to the schema that defines the expected structure.\n        \n    - **params** (object): Contains additional parameters related to the error, including:\n        \n        - **type** (string): The type of error encountered.\n            \n    - **message** (string): A message describing the error.\n        \n\nEnsure that the `quizId` is valid to avoid receiving a 400 Bad Request response.\n\nThis endpoint is used to submit an assignment by referencing a specific quiz. It requires a valid `quizId` to process the request.\n\n### Request\n\n- **Method**: POST\n    \n- **URL**: `http://ask-qa.portnov.com/api/v1/assignment`\n    \n- **Request Body**: The request should include a JSON object with the following parameter:\n    \n    - `quizId` (string): The ID of the quiz to which the assignment belongs. This should be referenced as an environment variable in the format `{\"quizId\": \"{{quizId}}\"}`.\n        \n\n### Response\n\n- **Status Code**: 400\n    \n- **Content-Type**: application/json\n    \n- **Response Body**: The response will return a JSON object with the following structure:\n    \n    - `status`: The status of the request (string).\n        \n    - `message`: A message providing additional context (string).\n        \n    - `data`: An object containing:\n        \n        - `keyword`: A keyword related to the error (string).\n            \n        - `dataPath`: The path to the data that caused the error (string).\n            \n        - `schemaPath`: The path to the schema that was violated (string).\n            \n        - `params`: An object with:\n            \n            - `type`: The type of the error (string).\n                \n        - `message`: A message describing the error (string).\n            \n\nEnsure to provide a valid `quizId` to avoid receiving a 400 error response."
+			},
+			"response": []
+		},
+		{
+			"name": "/Assignment - [S] - My Assignment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"var assignmentId = pm.environment.get(\"assignmentId\"); // Fixed ReferenceError\r",
+							"pm.test(\"Verify assignmentId and status before submission\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[jsonData.length-1].id).to.eql(assignmentId);\r",
+							"    pm.expect(jsonData[jsonData.length-1].status).to.eql(\"ASSIGNED\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{StudentToken}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"id\": {{assignmentId}},\r\n    \"quiz\": {\r\n      \"name\": \"Demo Quiz\",\r\n      \"showStopperQuestion\": 1,\r\n      \"questions\": [\r\n        {\r\n          \"type\": \"TEXTUAL\",\r\n          \"question\": \"What is your name?\"\r\n        },\r\n        {\r\n          \"type\": \"SINGLE_CHOICE\",\r\n          \"question\": \"Which city is city largest in California?\",\r\n          \"hasOtherOption\": false,\r\n          \"options\": [\r\n            \"San Francisco\",\r\n            \"Sacramento\",\r\n            \"Los Angeles\",\r\n            \"Redding\"\r\n          ]\r\n        },\r\n        {\r\n          \"type\": \"MULTIPLE_CHOICE\",\r\n          \"question\": \"Who was apple founded by?\",\r\n          \"hasOtherOption\": true,\r\n          \"options\": [\r\n            \"Steve Jobs\",\r\n            \"Steve Wozniak\",\r\n            \"Ronald Wayne\",\r\n            \"Ronald Reagan\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"createdAt\": \"2018-04-03T15:47:02.524Z\"\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/my-assignments"
+			},
+			"response": []
+		},
+		{
+			"name": "/Assignment - [S] - Submit My Assignment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var myAssignment = pm.environment.get(\"assignmentId\");\r",
+							"\r",
+							"pm.test(\"Verify assignmentId, status, result, gradedBy after submission\", function() {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[jsonData.length - 1].id).to.eql(myAssignment);\r",
+							"    pm.expect(jsonData[0].status).to.eql(\"GRADED\");\r",
+							"    pm.expect(jsonData[0].result).to.eql(\"PASSED\");\r",
+							"    pm.expect(jsonData[0].gradedBy).to.eql(\"TEACHER\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{StudentToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"assignmentId\": {{assignmentId}},\r\n    \"answers\":[{\"textAnswer\":\"Correct\",\"answer\":null},{\"textAnswer\":\"\",\"answer\":2},{\"textAnswer\":\"\",\"answer\":[0,1,2]}]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/submit-assignment"
+			},
+			"response": []
+		},
+		{
+			"name": "Assignment -[T] - put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify status, result, gradedBy after submission\", function() {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[jsonData.length-1].status).to.eql(\"GRADED\");\r",
+							"    pm.expect(jsonData[jsonData.length-1].result).to.eql(\"PASSED\");\r",
+							"    pm.expect(jsonData[jsonData.length-1].gradedBy).to.eql(\"TEACHER\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "//{\"summary\": \"Summary from teacher\",\"result\": \"PASSED\",\"grades\": [{\"comment\": \"Teacher comment\",\"additionalScore\": 5}]}\r\n\r\n{\r\n  \"summary\": \"Summary from teacher\",\r\n  \"result\": \"PASSED\",\r\n  \"grades\": [\r\n    {\r\n      \"comment\": \"Teacher comment\",\r\n      \"additionalScore\": 5\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/assignment/{{assignmentId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Check-my grades - [S]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"var myQuiz = pm.environment.get(\"assignmentId\");\r",
+							"console.log(\"my quiz number \", myQuiz);\r",
+							"\r",
+							"pm.test(\"Verify quiz id and updated name in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[jsonData.length-1].result).to.eql(\"PASSED\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{StudentToken}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"id\": {{assignmentId}},\r\n    \"quiz\": {\r\n      \"name\": \"Demo Quiz\",\r\n      \"totalScore\": 18,\r\n      \"passingPercentage\": 75,\r\n      \"showStopperQuestion\": 1,\r\n      \"questions\": [\r\n        {\r\n          \"type\": \"TEXTUAL\",\r\n          \"question\": \"What is your name?\",\r\n          \"score\": 5\r\n        },\r\n        {\r\n          \"type\": \"SINGLE_CHOICE\",\r\n          \"question\": \"Which city is city largest in California?\",\r\n          \"score\": 7,\r\n          \"answer\": 2,\r\n          \"hasOtherOption\": false,\r\n          \"options\": [\r\n            \"San Francisco\",\r\n            \"Sacramento\",\r\n            \"Los Angeles\",\r\n            \"Redding\"\r\n          ]\r\n        },\r\n        {\r\n          \"type\": \"MULTIPLE_CHOICE\",\r\n          \"question\": \"Who was apple founded by?\",\r\n          \"score\": 6,\r\n          \"answers\": [\r\n            0,\r\n            1,\r\n            2\r\n          ],\r\n          \"hasOtherOption\": true,\r\n          \"options\": [\r\n            \"Steve Jobs\",\r\n            \"Steve Wozniak\",\r\n            \"Ronald Wayne\",\r\n            \"Ronald Reagan\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"assignmentGroupID\": {{assignmentGroupId}},\r\n    \"status\": \"ASSIGNED\",\r\n    \"result\": \"PASSED\",\r\n    \"gradedBy\": \"NONE\",\r\n    \"answers\": [\r\n      {\r\n        \"answer\": [\r\n          0,\r\n          2,\r\n          3,\r\n          4\r\n        ],\r\n        \"textAnswer\": \"This is my answer\"\r\n      }\r\n    ],\r\n    \"scores\": [\r\n      0,\r\n      2,\r\n      3\r\n    ],\r\n    \"additionalScores\": [\r\n      0,\r\n      2,\r\n      3\r\n    ],\r\n    \"comments\": [\r\n      \"Comment 1\",\r\n      \"Comment 2\"\r\n    ],\r\n    \"summary\": \"This is quiz summary\",\r\n    \"submittedAt\": \"2018-04-03T15:47:02.524Z\",\r\n    \"gradedAt\": \"2018-04-03T15:47:02.524Z\"\r\n  },\r\n  {\r\n    \"id\": 12,\r\n    \"quiz\": {\r\n      \"name\": \"Demo Quiz\",\r\n      \"showStopperQuestion\": 1,\r\n      \"questions\": [\r\n        {\r\n          \"type\": \"TEXTUAL\",\r\n          \"question\": \"What is your name?\"\r\n        },\r\n        {\r\n          \"type\": \"SINGLE_CHOICE\",\r\n          \"question\": \"Which city is city largest in California?\",\r\n          \"hasOtherOption\": false,\r\n          \"options\": [\r\n            \"San Francisco\",\r\n            \"Sacramento\",\r\n            \"Los Angeles\",\r\n            \"Redding\"\r\n          ]\r\n        },\r\n        {\r\n          \"type\": \"MULTIPLE_CHOICE\",\r\n          \"question\": \"Who was apple founded by?\",\r\n          \"hasOtherOption\": true,\r\n          \"options\": [\r\n            \"Steve Jobs\",\r\n            \"Steve Wozniak\",\r\n            \"Ronald Wayne\",\r\n            \"Ronald Reagan\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"createdAt\": \"2018-04-03T15:47:02.524Z\"\r\n  }\r\n]"
+				},
+				"url": "{{baseUrl}}/my-grades"
+			},
+			"response": []
+		},
+		{
+			"name": "/Quiz - [T] - New Quiz -delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string - Quiz was deleted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.equal(\"Quiz was deleted\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/quiz/{{quizId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "/Quiz - [T] - New AssignmentGroupID -delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message - Assignment was deleted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.equal(\"Assignment was deleted\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/assignment/{{assignmentGroupId}}"
+			},
+			"response": []
+		}
+	]
+}
