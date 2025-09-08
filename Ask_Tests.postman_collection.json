@@ -411,7 +411,7 @@
 							"    pm.expect(jsonData[jsonData.length - 1].id).to.eql(myAssignment);\r",
 							"    pm.expect(jsonData[0].status).to.eql(\"GRADED\");\r",
 							"    pm.expect(jsonData[0].result).to.eql(\"PASSED\");\r",
-							"    pm.expect(jsonData[0].gradedBy).to.eql(\"TEACHER\");\r",
+							"    pm.expect(jsonData[0].gradedBy).to.eql(\"AUTOMATIC\");\r",
 							"});\r",
 							""
 						],
